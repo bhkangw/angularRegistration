@@ -5,7 +5,9 @@
 	background-color: rgba(64, 255, 47, 0.521)
  }
 
-/* .ng-untouched { }
+.ng-untouched {
+	
+ }
 .ng-touched { }
 .ng-dirty { }
-.ng-pristine { } */
+.ng-pristine { }

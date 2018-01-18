@@ -11,68 +11,58 @@
   <div class="container">
     <div class="jumbotron">
         <h1>Registration</h1>
+        <div *ngIf="users.length > 0">
+          <p>Thank you for registering with us {{users[users.length - 1].fname}}. We sent confirmation to {{users[users.length - 1].email}} and will send mail to {{users[users.length - 1].address}} {{users[users.length - 1].unit}}, {{users[users.length - 1].city}}, {{users[users.length - 1].state}}</p>
+          <p>Have a wonderful day!</p>
+        </div>
     </div>
     <div class="display">
       <h1>Account Information</h1>
-      <form (submit)="onSubmit()">
+      <form #myForm="ngForm" (submit)="onSubmit()">
         <p>First Name
-        <input 
-        type="text" 
-        name="fname" 
-        required
-        [(ngModel)]="user.fname"
-        #fname="ngModel"> <span *ngIf="!fname.valid"> This field is required!</span></p>
+        <input type="text" name="fname" required [(ngModel)]="user.fname" #fname="ngModel">
+        <span *ngIf="fname.invalid && fname.touched"> Required</span></p>
 
         <p>Last Name
-        <input 
-        type="text" 
-        name="lname" 
-        required
-        [(ngModel)]="user.lname"
-        #lname="ngModel"><span *ngIf="!lname.valid"> This field is required!</span></p>
+        <input type="text" name="lname" required [(ngModel)]="user.lname" #lname="ngModel">
+        <span *ngIf="lname.invalid  && lname.touched"> Required</span></p>
 
         <p>Email
-        <input type="text" name="email" required [(ngModel)]="user.email" #email="ngModel">
-        <span *ngIf="!email.valid"> This field is required!</span>
-        </p>
+        <input type="email" name="email" required [(ngModel)]="user.email" #email="ngModel" pattern="([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,3})">
+        <span *ngIf="email.invalid && email.touched"> Enter valid email</span></p>
 
         <p>Password
-        <input 
-        type="password" 
-        name="pw" 
-        required
-        minlength="16"
-        [(ngModel)]="user.pw"
-        #pw="ngModel"><span *ngIf="!pw.valid"> PW must be at least 16 characters</span></p>
+        <input type="password" name="pw" required minlength="16" [(ngModel)]="user.pw" #pw="ngModel">
+        <span *ngIf="pw.invalid && pw.touched"> PW must be at least 16 characters</span></p>
 
         <p>PW Confirm
-        <input type="password" name="pw"></p>
+        <input type="password" name="pwc" required minlength="16" [(ngModel)]="user.pwc" #pwc="ngModel">
+        <span *ngIf="user.pw != user.pwc"> PW must match</span></p>
 
         <p>Street Address
         <input type="text" name="address" required [(ngModel)]="user.address" #address="ngModel">
-        <span *ngIf="!address.valid"> This field is required!</span>
-        </p>
+        <span *ngIf="address.invalid && address.touched"> Required</span></p>
 
         <p>Unit / Apt #
-        <input type="text" name="unit"></p>
+        <input type="text" name="unit" [(ngModel)]="user.unit" #unit="ngModel"></p>
 
         <p>City
-        <input type="city" name="email" required [(ngModel)]="user.city" #city="ngModel">
-        <span *ngIf="!city.valid"> This field is required!</span>
-        </p>
+        <input type="city" name="city" required [(ngModel)]="user.city" #city="ngModel">
+        <span *ngIf="city.invalid && city.touched"> Required</span></p>
 
         <p>State
-        <select name="" id="state">
+        <select name="state" id="state" required [(ngModel)]="user.state" #state="ngModel">
+          <option value="">-</option>
           <option value="CA">CA</option>
           <option value="WA">WA</option>
-        </select></p>
+        </select><span *ngIf="state.invalid && state.touched"> Required</span></p>
+
         <p>I'm Feeling Lucky
-        <input type="radio" name="lucky" ng-model="user.lucky" value="yes" required> Yes
-        <input type="radio" name="lucky" ng-model="user.lucky" value="no" required> No 
-        <span class="error" ng-show="myForm.lucky.$error.required && submitted == true">
-          <i class="fa fa-exclamation-circle"></i>Please select an answer.</span></p>
-        <br><input type="submit" value="Register" class="btn btn-success">
-      </form>
+        <input type="radio" name="lucky" value="yes" [(ngModel)]="user.radio" #radio="ngModel" required> Yes
+        <input type="radio" name="lucky" value="no" [(ngModel)]="user.radio" #radio="ngModel" required> No 
+        <span *ngIf="radio.invalid && radio.touched"> Required</span></p>
+        <br><input type="submit" value="Register" class="btn btn-success" [disabled]="myForm.invalid">
+      </form><br>
     </div>
   </div>
 </body>
